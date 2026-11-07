@@ -1,0 +1,16 @@
+bin/
+obj/
+.vs/
+.vscode/
+*.user
+*.suo
+
+appsettings.Development.json
+appsettings.Local.json
+.env
+.env.*
+!.env.example
+
+*.bak
+*.sql
+*.sql.gz

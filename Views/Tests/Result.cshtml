@@ -1,0 +1,152 @@
+
+@model EduProgress.ViewModels.TestResultViewModel
+
+@{
+    ViewData["Title"] = "Результат тесту";
+
+    int score = Math.Clamp(Model.ScorePercent, 0, 100);
+    bool isPassed = Model.IsPassed;
+
+    string resultTitle = isPassed
+        ? "Тест успішно складено!"
+        : "Продовжуй навчатися!";
+
+    string resultMessage = isPassed
+        ? "Чудова робота! Ти продемонстрував свої знання."
+        : "Не засмучуйся. Повтори матеріал і спробуй покращити результат.";
+}
+
+<div class="result-page">
+
+    <a asp-controller="Courses"
+       asp-action="Details"
+       asp-route-id="@Model.CourseId"
+       class="result-back">
+        <i class="bi bi-arrow-left"></i>
+        Назад до курсу
+    </a>
+
+    <section class="result-card">
+
+        <div class="result-header">
+
+            <div class="result-icon">
+                @if (isPassed)
+                {
+                    <i class="bi bi-trophy-fill"></i>
+                }
+                else
+                {
+                    <i class="bi bi-book-half"></i>
+                }
+            </div>
+
+            <span class="result-eyebrow">
+                <i class="bi bi-stars"></i>
+                РЕЗУЛЬТАТ ТЕСТУВАННЯ
+            </span>
+
+            <h1>Твій результат</h1>
+
+            <p>@Model.CourseTitle</p>
+
+        </div>
+
+        <div class="result-ring"
+             role="progressbar"
+             aria-label="Результат тестування"
+             aria-valuenow="@score"
+             aria-valuemin="0"
+             aria-valuemax="100">
+
+            <div class="result-ring-track"
+                 style="--result-score: @score;">
+
+                <div class="result-ring-inner">
+                    <strong>@score%</strong>
+                    <span>правильних відповідей</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="result-stats">
+
+            <div class="result-stat">
+
+                <div class="result-stat-icon">
+                    <i class="bi bi-check2-circle"></i>
+                </div>
+
+                <div>
+                    <strong>
+                        @Model.CorrectAnswers /
+                        @Model.TotalQuestions
+                    </strong>
+                    <span>Правильних відповідей</span>
+                </div>
+
+            </div>
+
+            <div class="result-stat">
+
+                <div class="result-stat-icon">
+                    <i class="bi bi-award"></i>
+                </div>
+
+                <div>
+                    <strong>
+                        @(isPassed ? "Складено" : "Не складено")
+                    </strong>
+                    <span>Статус тестування</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="result-message @(isPassed ? "result-passed" : "result-failed")">
+
+            <div class="result-message-icon">
+                <i class="bi @(isPassed
+                    ? "bi-check-circle-fill"
+                    : "bi-info-circle-fill")"></i>
+            </div>
+
+            <div>
+                <h2>@resultTitle</h2>
+                <p>@resultMessage</p>
+
+                @if (!isPassed)
+                {
+                    <small>
+                        Для успішного проходження необхідно
+                        набрати щонайменше 60%.
+                    </small>
+                }
+            </div>
+
+        </div>
+
+        @if (Model.CompletedAt.HasValue)
+        {
+            <div class="result-date">
+                <i class="bi bi-calendar-check"></i>
+
+                Завершено (UTC):
+                @Model.CompletedAt.Value.ToString("dd.MM.yyyy HH:mm")
+            </div>
+        }
+
+        <a asp-controller="Courses"
+           asp-action="Details"
+           asp-route-id="@Model.CourseId"
+           class="result-return-button">
+            <i class="bi bi-arrow-left"></i>
+            Повернутися до курсу
+        </a>
+
+    </section>
+
+</div>

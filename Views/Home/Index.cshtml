@@ -1,0 +1,302 @@
+﻿
+@{
+    ViewData["Title"] = "Головна";
+}
+
+<div class="home-page">
+
+    <section class="home-hero">
+
+        <div class="home-hero-content">
+
+            <div class="home-eyebrow">
+                <span class="home-status-dot"></span>
+                Твій простір для розвитку
+            </div>
+
+            <h1 class="home-heading">
+                Навчайся.<br />
+                Практикуйся.<br />
+                <span>Прогресуй.</span>
+            </h1>
+
+            <p class="home-description">
+                Відкривай нові знання, проходь інтерактивні
+                тести та спостерігай за власними досягненнями.
+                Усе необхідне для навчання — в одному місці.
+            </p>
+
+            <div class="home-actions">
+                <a asp-controller="Courses"
+                   asp-action="Index"
+                   class="home-primary-btn">
+                    Переглянути курси
+                    <i class="bi bi-arrow-up-right"></i>
+                </a>
+
+                @if (User.IsInRole("Student"))
+                {
+                    <a asp-controller="Home"
+                       asp-action="Progress"
+                       class="home-secondary-btn">
+                        Мій прогрес
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </a>
+                }
+                else if (User.IsInRole("Teacher"))
+                {
+                    <a asp-controller="Teacher"
+                       asp-action="Index"
+                       class="home-secondary-btn">
+                        Кабінет викладача
+                        <i class="bi bi-grid-1x2"></i>
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Account"
+                       asp-action="Register"
+                       class="home-secondary-btn">
+                        Почати навчання
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                }
+            </div>
+
+            <div class="home-hero-note">
+                <i class="bi bi-stars"></i>
+                Навчайся у власному темпі
+            </div>
+
+        </div>
+
+        <div class="home-visual" aria-hidden="true">
+
+            <div class="home-orb home-orb-one"></div>
+            <div class="home-orb home-orb-two"></div>
+
+            <div class="home-preview">
+
+                <div class="home-preview-top">
+                    <div class="home-preview-icon">
+                        <i class="bi bi-mortarboard-fill"></i>
+                    </div>
+
+                    <div>
+                        <span class="home-preview-label">
+                            НАВЧАЛЬНИЙ ПРОСТІР
+                        </span>
+                        <h3>EduProgress</h3>
+                    </div>
+
+                    <div class="home-preview-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+
+                <div class="home-preview-heading">
+                    Твій шлях у веброзробці
+                </div>
+
+                <div class="home-preview-course">
+                    <div class="home-course-icon html-icon">
+                        <i class="bi bi-filetype-html"></i>
+                    </div>
+
+                    <div class="home-preview-course-info">
+                        <strong>HTML</strong>
+                        <span>Структура вебсторінок</span>
+                    </div>
+
+                    <i class="bi bi-arrow-up-right"></i>
+                </div>
+
+                <div class="home-preview-course">
+                    <div class="home-course-icon css-icon">
+                        <i class="bi bi-filetype-css"></i>
+                    </div>
+
+                    <div class="home-preview-course-info">
+                        <strong>CSS</strong>
+                        <span>Стилі та дизайн</span>
+                    </div>
+
+                    <i class="bi bi-arrow-up-right"></i>
+                </div>
+
+                <div class="home-preview-course">
+                    <div class="home-course-icon js-icon">
+                        <i class="bi bi-filetype-js"></i>
+                    </div>
+
+                    <div class="home-preview-course-info">
+                        <strong>JavaScript</strong>
+                        <span>Інтерактивність</span>
+                    </div>
+
+                    <i class="bi bi-arrow-up-right"></i>
+                </div>
+
+                <div class="home-preview-footer">
+                    <i class="bi bi-lightning-charge-fill"></i>
+                    Кожен урок — крок уперед
+                </div>
+
+            </div>
+
+            <div class="home-floating-label">
+                <div class="home-floating-icon">
+                    <i class="bi bi-stars"></i>
+                </div>
+
+                <div>
+                    <strong>Нові можливості</strong>
+                    <span>Розвивай свої навички</span>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="home-features">
+
+        <div class="home-section-heading">
+            <div>
+                <span class="home-section-kicker">
+                    МОЖЛИВОСТІ ПЛАТФОРМИ
+                </span>
+                <h2>Усе для твого розвитку</h2>
+                <p>
+                    Зручні інструменти, які допомагають
+                    навчатися ефективніше.
+                </p>
+            </div>
+        </div>
+
+        <div class="home-feature-grid">
+
+            <a asp-controller="Courses"
+               asp-action="Index"
+               class="home-feature-card">
+
+                <div class="home-feature-icon feature-purple">
+                    <i class="bi bi-book-half"></i>
+                </div>
+
+                <h3>Навчальні курси</h3>
+
+                <p>
+                    Вивчай HTML, CSS, JavaScript та інші
+                    технології у зручному форматі.
+                </p>
+
+                <div class="home-feature-link">
+                    Переглянути курси
+                    <i class="bi bi-arrow-up-right"></i>
+                </div>
+
+            </a>
+
+            <a asp-controller="Courses"
+               asp-action="Index"
+               class="home-feature-card">
+
+                <div class="home-feature-icon feature-pink">
+                    <i class="bi bi-patch-check"></i>
+                </div>
+
+                <h3>Інтерактивні тести</h3>
+
+                <p>
+                    Перевіряй знання після навчання
+                    та отримуй результати своїх спроб.
+                </p>
+
+                <div class="home-feature-link">
+                    Обрати курс із тестом
+                    <i class="bi bi-arrow-up-right"></i>
+                </div>
+
+            </a>
+
+            @if (User.IsInRole("Student"))
+            {
+                <a asp-controller="Home"
+                   asp-action="Progress"
+                   class="home-feature-card">
+
+                    <div class="home-feature-icon feature-blue">
+                        <i class="bi bi-bar-chart-line"></i>
+                    </div>
+
+                    <h3>Твій прогрес</h3>
+
+                    <p>
+                        Відстежуй завершені уроки,
+                        результати й навчальні досягнення.
+                    </p>
+
+                    <div class="home-feature-link">
+                        Переглянути прогрес
+                        <i class="bi bi-arrow-up-right"></i>
+                    </div>
+
+                </a>
+            }
+            else if (User.IsInRole("Teacher"))
+            {
+                <a asp-controller="Teacher"
+                   asp-action="Index"
+                   class="home-feature-card">
+
+                    <div class="home-feature-icon feature-blue">
+                        <i class="bi bi-person-workspace"></i>
+                    </div>
+
+                    <h3>Керування навчанням</h3>
+
+                    <p>
+                        Створюй курси, редагуй уроки
+                        та керуй тестовими запитаннями.
+                    </p>
+
+                    <div class="home-feature-link">
+                        Кабінет викладача
+                        <i class="bi bi-arrow-up-right"></i>
+                    </div>
+
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Account"
+                   asp-action="Register"
+                   class="home-feature-card">
+
+                    <div class="home-feature-icon feature-blue">
+                        <i class="bi bi-person-plus"></i>
+                    </div>
+
+                    <h3>Особистий прогрес</h3>
+
+                    <p>
+                        Створи обліковий запис, щоб
+                        зберігати свої досягнення.
+                    </p>
+
+                    <div class="home-feature-link">
+                        Зареєструватися
+                        <i class="bi bi-arrow-up-right"></i>
+                    </div>
+
+                </a>
+            }
+
+        </div>
+
+    </section>
+
+</div>

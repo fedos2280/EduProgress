@@ -1,0 +1,110 @@
+
+@model EduProgress.ViewModels.CreateTestQuestionViewModel
+
+@{
+    ViewData["Title"] = "Додати запитання";
+}
+
+<div class="container py-5">
+
+    <a asp-controller="Teacher"
+       asp-action="Index"
+       class="btn btn-outline-secondary mb-4">
+        ← Назад до кабінету
+    </a>
+
+    <div class="glass-card p-4 p-md-5">
+
+        <span class="badge bg-primary mb-3">
+            Керування тестами
+        </span>
+
+        <h1 class="fw-bold mb-3">
+            Додати тестове запитання
+        </h1>
+
+        <p class="mb-4">
+            Курс: <strong>@ViewBag.CourseTitle</strong>
+        </p>
+
+        <form asp-controller="Teacher"
+              asp-action="CreateQuestion"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input asp-for="CourseId" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="QuestionText"
+                       class="form-label"></label>
+
+                <textarea asp-for="QuestionText"
+                          class="form-control"
+                          rows="3"></textarea>
+
+                <span asp-validation-for="QuestionText"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="OptionA" class="form-label"></label>
+                <input asp-for="OptionA" class="form-control" />
+                <span asp-validation-for="OptionA"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="OptionB" class="form-label"></label>
+                <input asp-for="OptionB" class="form-control" />
+                <span asp-validation-for="OptionB"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="OptionC" class="form-label"></label>
+                <input asp-for="OptionC" class="form-control" />
+                <span asp-validation-for="OptionC"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="OptionD" class="form-label"></label>
+                <input asp-for="OptionD" class="form-control" />
+                <span asp-validation-for="OptionD"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="CorrectAnswer"
+                       class="form-label"></label>
+
+                <select asp-for="CorrectAnswer"
+                        class="form-select">
+                    <option value="">Оберіть правильну відповідь</option>
+                    <option value="A">Варіант A</option>
+                    <option value="B">Варіант B</option>
+                    <option value="C">Варіант C</option>
+                    <option value="D">Варіант D</option>
+                </select>
+
+                <span asp-validation-for="CorrectAnswer"
+                      class="text-danger"></span>
+            </div>
+
+            <button type="submit"
+                    class="btn btn-success btn-lg">
+                <i class="bi bi-check-circle"></i>
+                Зберегти запитання
+            </button>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

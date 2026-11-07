@@ -1,0 +1,74 @@
+
+@model List<EduProgress.Models.TestQuestion>
+
+@{
+    ViewData["Title"] = "Керування запитаннями";
+}
+
+<div class="container py-5">
+
+    <a asp-controller="Teacher"
+       asp-action="Index"
+       class="btn btn-outline-secondary mb-4">
+        <i class="bi bi-arrow-left"></i>
+        Назад до кабінету
+    </a>
+
+    <div class="glass-card p-4 p-md-5">
+
+        <h1 class="fw-bold mb-3">
+            <i class="bi bi-ui-checks"></i>
+            Тестові запитання
+        </h1>
+
+        <p class="mb-4">
+            Тут викладач може переглядати та редагувати
+            запитання навчальних курсів.
+        </p>
+
+        <a asp-controller="Teacher"
+           asp-action="CreateQuestion"
+           class="btn btn-primary mb-4">
+            <i class="bi bi-plus-circle"></i>
+            Додати запитання
+        </a>
+
+        @if (!Model.Any())
+        {
+            <p>Запитань поки немає.</p>
+        }
+        else
+        {
+            @foreach (var question in Model)
+            {
+                <div class="glass-card p-3 mb-3">
+
+                    <div class="mb-2">
+                        <span class="badge bg-primary">
+                            @(question.Course?.Title ?? "Курс")
+                        </span>
+                    </div>
+
+                    <h5 class="fw-bold">
+                        @question.QuestionText
+                    </h5>
+
+                    <p class="mb-2">
+                        <strong>Правильна відповідь:</strong>
+                        @question.CorrectAnswer
+                    </p>
+
+                    <a asp-controller="Teacher"
+                       asp-action="EditQuestion"
+                       asp-route-id="@question.Id"
+                       class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-pencil-square"></i>
+                        Редагувати
+                    </a>
+
+                </div>
+            }
+        }
+
+    </div>
+</div>

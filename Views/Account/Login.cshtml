@@ -1,0 +1,187 @@
+
+@model EduProgress.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Вхід";
+}
+
+<div class="auth-page">
+
+    <div class="auth-layout">
+
+        <section class="auth-showcase">
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="auth-brand">
+                <span class="auth-brand-icon">
+                    <i class="bi bi-mortarboard-fill"></i>
+                </span>
+                EduProgress
+            </a>
+
+            <div class="auth-showcase-content">
+
+                <span class="auth-showcase-eyebrow">
+                    <i class="bi bi-stars"></i>
+                    ПЛАТФОРМА ДЛЯ НАВЧАННЯ
+                </span>
+
+                <h1>
+                    Твоє майбутнє
+                    починається <span>тут.</span>
+                </h1>
+
+                <p>
+                    Повертайся до навчання, відкривай нові
+                    знання та рухайся до своїх цілей
+                    разом з EduProgress.
+                </p>
+
+                <div class="auth-benefits">
+
+                    <div class="auth-benefit">
+                        <span>
+                            <i class="bi bi-book-half"></i>
+                        </span>
+
+                        <div>
+                            <strong>Навчальні курси</strong>
+                            <small>Знання у зручному форматі</small>
+                        </div>
+                    </div>
+
+                    <div class="auth-benefit">
+                        <span>
+                            <i class="bi bi-patch-check"></i>
+                        </span>
+
+                        <div>
+                            <strong>Перевірка знань</strong>
+                            <small>Тестування після навчання</small>
+                        </div>
+                    </div>
+
+                    <div class="auth-benefit">
+                        <span>
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </span>
+
+                        <div>
+                            <strong>Особистий прогрес</strong>
+                            <small>Відстеження своїх досягнень</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="auth-showcase-footer">
+                <i class="bi bi-lightning-charge-fill"></i>
+                Кожен урок — крок уперед
+            </div>
+
+        </section>
+
+        <section class="auth-form-panel">
+
+            <div class="auth-form-heading">
+
+                <div class="auth-form-icon">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                </div>
+
+                <span class="auth-form-eyebrow">
+                    РАДІ БАЧИТИ ЗНОВУ
+                </span>
+
+                <h2>З поверненням!</h2>
+
+                <p>
+                    Увійди до свого акаунта, щоб
+                    продовжити навчання.
+                </p>
+
+            </div>
+
+            <form asp-controller="Account"
+                  asp-action="Login"
+                  method="post"
+                  class="auth-form">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="auth-validation-summary"></div>
+
+                <div class="auth-field">
+                    <label asp-for="Email"></label>
+
+                    <div class="auth-input-wrap">
+                        <i class="bi bi-envelope"></i>
+
+                        <input asp-for="Email"
+                               autocomplete="email"
+                               placeholder="example@gmail.com" />
+                    </div>
+
+                    <span asp-validation-for="Email"
+                          class="auth-field-error"></span>
+                </div>
+
+                <div class="auth-field">
+                    <label asp-for="Password"></label>
+
+                    <div class="auth-input-wrap">
+                        <i class="bi bi-lock"></i>
+
+                        <input asp-for="Password"
+                               autocomplete="current-password"
+                               placeholder="Введіть пароль" />
+                    </div>
+
+                    <span asp-validation-for="Password"
+                          class="auth-field-error"></span>
+                </div>
+
+                <div class="auth-remember">
+
+                    <label class="auth-check-label">
+                        <input asp-for="RememberMe" />
+                        <span asp-for="RememberMe"></span>
+                        Запам'ятати мене
+                    </label>
+
+                </div>
+
+                <button type="submit"
+                        class="auth-submit-button">
+                    Увійти в EduProgress
+                    <i class="bi bi-arrow-right"></i>
+                </button>
+
+            </form>
+
+            <div class="auth-form-footer">
+
+                <p>
+                    Ще немає акаунта?
+
+                    <a asp-controller="Account"
+                       asp-action="Register">
+                        Зареєструватися
+                    </a>
+                </p>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

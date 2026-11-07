@@ -1,0 +1,266 @@
+
+@model EduProgress.Models.Course
+@using EduProgress.Models
+
+@{
+    ViewData["Title"] = Model.Title;
+
+    var lessons = ViewBag.Lessons as List<Lesson>
+                  ?? new List<Lesson>();
+
+    int totalLessons = ViewBag.TotalLessons ?? 0;
+    int completedLessons = ViewBag.CompletedLessons ?? 0;
+    int progressPercent = ViewBag.ProgressPercent ?? 0;
+
+    bool isStudent = User.Identity?.IsAuthenticated == true
+                     && User.IsInRole("Student");
+
+    bool isTeacher = User.IsInRole("Teacher");
+    bool isLoggedIn = User.Identity?.IsAuthenticated == true;
+
+    var technology = ((Model.Title ?? "") + " " +
+                      (Model.Category ?? "")).ToLowerInvariant();
+
+    var courseIcon = "bi-code-slash";
+
+    if (technology.Contains("javascript"))
+        courseIcon = "bi-filetype-js";
+    else if (technology.Contains("html"))
+        courseIcon = "bi-filetype-html";
+    else if (technology.Contains("css"))
+        courseIcon = "bi-filetype-css";
+    else if (technology.Contains("c#") || technology.Contains("csharp"))
+        courseIcon = "bi-code-square";
+
+    progressPercent = Math.Clamp(progressPercent, 0, 100);
+}
+
+<div class="course-detail-page">
+
+    <a asp-controller="Courses"
+       asp-action="Index"
+       class="course-detail-back">
+        <i class="bi bi-arrow-left"></i>
+        Назад до каталогу
+    </a>
+
+    <section class="course-detail-hero">
+
+        <div class="course-detail-hero-info">
+
+            <span class="course-detail-eyebrow">
+                <i class="bi bi-stars"></i>
+                НАВЧАЛЬНИЙ КУРС
+            </span>
+
+            <div class="course-detail-tags">
+                <span>
+                    <i class="bi bi-grid"></i>
+                    @Model.Category
+                </span>
+                <span>
+                    <i class="bi bi-bar-chart-steps"></i>
+                    @Model.Level
+                </span>
+            </div>
+
+            <h1>@Model.Title</h1>
+
+            <p class="course-detail-description">
+                @Model.Description
+            </p>
+
+            <div class="course-detail-facts">
+                <span>
+                    <i class="bi bi-journals"></i>
+                    @totalLessons уроків
+                </span>
+
+                <span>
+                    <i class="bi bi-lightning-charge"></i>
+                    Навчання у власному темпі
+                </span>
+            </div>
+
+        </div>
+
+        <div class="course-detail-art" aria-hidden="true">
+            <div class="course-detail-ring"></div>
+            <div class="course-detail-art-icon">
+                <i class="bi @courseIcon"></i>
+            </div>
+        </div>
+
+    </section>
+
+    @if (isStudent)
+    {
+        <section class="course-detail-progress">
+
+            <div class="course-detail-progress-heading">
+                <div class="course-detail-progress-icon">
+                    <i class="bi bi-graph-up-arrow"></i>
+                </div>
+
+                <div>
+                    <span>ТВОЇ ДОСЯГНЕННЯ</span>
+                    <h2>Прогрес навчання</h2>
+                </div>
+
+                <strong>@progressPercent%</strong>
+            </div>
+
+            <div class="course-detail-progress-track"
+                 role="progressbar"
+                 aria-label="Прогрес проходження курсу"
+                 aria-valuenow="@progressPercent"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+                <div class="course-detail-progress-fill"
+                     style="width: @(progressPercent)%;">
+                </div>
+            </div>
+
+            <p>
+                Завершено <strong>@completedLessons</strong>
+                із <strong>@totalLessons</strong> уроків
+            </p>
+
+        </section>
+    }
+
+    <section class="course-detail-lessons">
+
+        <div class="course-detail-section-title">
+            <div>
+                <span>НАВЧАЛЬНА ПРОГРАМА</span>
+                <h2>Уроки курсу</h2>
+                <p>
+                    Проходь матеріали послідовно та відкривай нові знання.
+                </p>
+            </div>
+
+            <div class="course-detail-counter">
+                <i class="bi bi-collection"></i>
+                @lessons.Count уроків
+            </div>
+        </div>
+
+        @if (lessons.Count == 0)
+        {
+            <div class="course-detail-empty">
+                <i class="bi bi-journal-x"></i>
+                <h3>Уроків поки немає</h3>
+                <p>Навчальні матеріали незабаром з'являться.</p>
+            </div>
+        }
+        else
+        {
+            <div class="course-detail-lesson-list">
+
+                @foreach (var lesson in lessons.OrderBy(l => l.Order))
+                {
+                    <article class="course-detail-lesson-card">
+
+                        <div class="course-detail-lesson-number">
+                            @lesson.Order
+                        </div>
+
+                        <div class="course-detail-lesson-body">
+
+                            <span class="course-detail-lesson-label">
+                                <i class="bi bi-book"></i>
+                                УРОК @lesson.Order
+                            </span>
+
+                            <h3>@lesson.Title</h3>
+
+                            <p>@lesson.Content</p>
+
+                        </div>
+
+                        <div class="course-detail-lesson-actions">
+
+                            <a asp-controller="Lessons"
+                               asp-action="Details"
+                               asp-route-id="@lesson.Id"
+                               class="course-detail-open-btn">
+                                Відкрити урок
+                                <i class="bi bi-arrow-up-right"></i>
+                            </a>
+
+                            @if (isTeacher)
+                            {
+                                <a asp-controller="Teacher"
+                                   asp-action="EditLesson"
+                                   asp-route-id="@lesson.Id"
+                                   class="course-detail-edit-btn">
+                                    <i class="bi bi-pencil-square"></i>
+                                    Редагувати
+                                </a>
+                            }
+
+                        </div>
+
+                    </article>
+                }
+
+            </div>
+        }
+
+    </section>
+
+    <section class="course-detail-test">
+
+        <div class="course-detail-test-icon">
+            <i class="bi bi-patch-check"></i>
+        </div>
+
+        <div class="course-detail-test-content">
+
+            <span>ПЕРЕВІРКА ЗНАНЬ</span>
+
+            <h2>Готовий перевірити себе?</h2>
+
+            <p>
+                Пройди тест із матеріалів цього курсу,
+                перевір свої знання та отримай результат.
+                Максимальна кількість спроб — 3.
+            </p>
+
+        </div>
+
+        <div class="course-detail-test-action">
+
+            @if (isStudent)
+            {
+                <a asp-controller="Tests"
+                   asp-action="Take"
+                   asp-route-id="@Model.Id"
+                   class="course-detail-test-btn">
+                    <i class="bi bi-pencil-square"></i>
+                    Пройти тест
+                </a>
+            }
+            else if (!isLoggedIn)
+            {
+                <a asp-controller="Account"
+                   asp-action="Login"
+                   class="course-detail-test-btn">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    Увійти
+                </a>
+            }
+            else
+            {
+                <span class="course-detail-teacher-note">
+                    <i class="bi bi-person-workspace"></i>
+                    Тестування доступне студентам
+                </span>
+            }
+
+        </div>
+
+    </section>
+
+</div>

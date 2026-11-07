@@ -1,0 +1,192 @@
+
+@model EduProgress.Models.Lesson
+
+@{
+    ViewData["Title"] = Model.Title;
+
+    bool isCompleted = ViewBag.IsCompleted == true;
+    bool isLoggedIn = User.Identity?.IsAuthenticated == true;
+    bool isStudent = User.IsInRole("Student");
+}
+
+<div class="learning-page">
+
+    <a asp-controller="Courses"
+       asp-action="Details"
+       asp-route-id="@Model.CourseId"
+       class="learning-back">
+        <i class="bi bi-arrow-left"></i>
+        Назад до курсу
+    </a>
+
+    <section class="learning-hero">
+
+        <div class="learning-hero-content">
+
+            <div class="learning-eyebrow">
+                <i class="bi bi-mortarboard"></i>
+                НАВЧАЛЬНИЙ МАТЕРІАЛ
+            </div>
+
+            <div class="learning-badges">
+                <span class="learning-badge">
+                    <i class="bi bi-book"></i>
+                    @(Model.Course?.Title ?? "Навчальний курс")
+                </span>
+
+                <span class="learning-badge">
+                    <i class="bi bi-hash"></i>
+                    Урок @Model.Order
+                </span>
+            </div>
+
+            <h1>@Model.Title</h1>
+
+            <p>
+                Вивчай матеріал у зручному темпі,
+                а після завершення збережи свій прогрес.
+            </p>
+
+        </div>
+
+        <div class="learning-hero-art" aria-hidden="true">
+            <div class="learning-art-ring"></div>
+            <div class="learning-art-icon">
+                <i class="bi bi-journal-code"></i>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="learning-layout">
+
+        <main class="learning-article">
+
+            <div class="learning-article-top">
+                <div class="learning-article-icon">
+                    <i class="bi bi-file-earmark-text"></i>
+                </div>
+
+                <div>
+                    <span>МАТЕРІАЛ УРОКУ</span>
+                    <h2>Теоретична частина</h2>
+                </div>
+            </div>
+
+            <div class="learning-divider"></div>
+
+            <div class="learning-reading">
+                @Model.Content
+            </div>
+
+            <div class="learning-article-footer">
+                <i class="bi bi-lightbulb"></i>
+                Порада: спробуй повторити приклади самостійно,
+                щоб краще запам'ятати матеріал.
+            </div>
+
+        </main>
+
+        <aside class="learning-sidebar">
+
+            <div class="learning-sidebar-heading">
+                <i class="bi bi-flag"></i>
+                Твій наступний крок
+            </div>
+
+            @if (isCompleted)
+            {
+                <div class="learning-success-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+
+                <h3>Урок завершено!</h3>
+
+                <p>
+                    Чудова робота! Твій прогрес уже
+                    збережено в EduProgress.
+                </p>
+
+                <div class="learning-completed-label">
+                    <i class="bi bi-check2-circle"></i>
+                    Виконано
+                </div>
+            }
+            else if (isStudent)
+            {
+                <div class="learning-pending-icon">
+                    <i class="bi bi-stars"></i>
+                </div>
+
+                <h3>Готовий рухатися далі?</h3>
+
+                <p>
+                    Прочитай навчальний матеріал і натисни
+                    кнопку, щоб позначити урок завершеним.
+                </p>
+
+                <form asp-controller="Lessons"
+                      asp-action="Complete"
+                      asp-route-id="@Model.Id"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <button type="submit"
+                            class="learning-complete-btn">
+                        <i class="bi bi-check-circle"></i>
+                        Завершити урок
+                    </button>
+
+                </form>
+            }
+            else if (!isLoggedIn)
+            {
+                <div class="learning-pending-icon">
+                    <i class="bi bi-person-circle"></i>
+                </div>
+
+                <h3>Зберігай свої досягнення</h3>
+
+                <p>
+                    Увійди до свого акаунта, щоб
+                    завершувати уроки та бачити прогрес.
+                </p>
+
+                <a asp-controller="Account"
+                   asp-action="Login"
+                   class="learning-complete-btn">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    Увійти
+                </a>
+            }
+            else
+            {
+                <div class="learning-pending-icon">
+                    <i class="bi bi-person-workspace"></i>
+                </div>
+
+                <h3>Режим викладача</h3>
+
+                <p>
+                    Завершення уроків доступне
+                    студентам.
+                </p>
+            }
+
+            <div class="learning-sidebar-divider"></div>
+
+            <a asp-controller="Courses"
+               asp-action="Details"
+               asp-route-id="@Model.CourseId"
+               class="learning-return-btn">
+                <i class="bi bi-grid"></i>
+                Усі уроки курсу
+                <i class="bi bi-arrow-right"></i>
+            </a>
+
+        </aside>
+
+    </div>
+
+</div>

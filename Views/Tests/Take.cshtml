@@ -1,0 +1,190 @@
+
+@model EduProgress.ViewModels.TestViewModel
+
+@{
+    ViewData["Title"] = "Тест: " + Model.CourseTitle;
+}
+
+<div class="exam-page">
+
+    <a asp-controller="Courses"
+       asp-action="Details"
+       asp-route-id="@Model.CourseId"
+       class="exam-back">
+        <i class="bi bi-arrow-left"></i>
+        Назад до курсу
+    </a>
+
+    <section class="exam-hero">
+
+        <div class="exam-hero-content">
+
+            <span class="exam-eyebrow">
+                <i class="bi bi-stars"></i>
+                ПЕРЕВІРКА ЗНАНЬ
+            </span>
+
+            <h1>Перевір свої <span>знання.</span></h1>
+
+            <p class="exam-subtitle">
+                @Model.CourseTitle
+            </p>
+
+            <div class="exam-meta">
+                <span>
+                    <i class="bi bi-question-circle"></i>
+                    @Model.Questions.Count запитань
+                </span>
+
+                <span>
+                    <i class="bi bi-check2-circle"></i>
+                    Одна відповідь на запитання
+                </span>
+            </div>
+
+        </div>
+
+        <div class="exam-hero-art" aria-hidden="true">
+            <div class="exam-art-ring"></div>
+            <div class="exam-art-icon">
+                <i class="bi bi-ui-checks"></i>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="exam-section-heading">
+        <div>
+            <span>ТЕСТУВАННЯ</span>
+            <h2>Запитання тесту</h2>
+            <p>Уважно прочитай запитання та обери правильний варіант.</p>
+        </div>
+
+        <div class="exam-count">
+            <i class="bi bi-list-check"></i>
+            Усього: @Model.Questions.Count
+        </div>
+    </div>
+
+    <form asp-controller="Tests"
+          asp-action="Submit"
+          method="post"
+          class="exam-form">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden"
+               name="AttemptId"
+               value="@Model.AttemptId" />
+
+        <input type="hidden"
+               name="CourseId"
+               value="@Model.CourseId" />
+
+        @for (int i = 0; i < Model.Questions.Count; i++)
+        {
+            var question = Model.Questions[i];
+
+            <section class="exam-question-card">
+
+                <div class="exam-question-header">
+
+                    <div class="exam-question-number">
+                        @(i + 1)
+                    </div>
+
+                    <div class="exam-question-title">
+                        <span>ЗАПИТАННЯ @(i + 1) ІЗ @Model.Questions.Count</span>
+                        <h3 id="exam-question-@i">
+                            @question.QuestionText
+                        </h3>
+                    </div>
+
+                </div>
+
+                <input type="hidden"
+                       name="Answers[@i].QuestionId"
+                       value="@question.Id" />
+
+                <div class="exam-options"
+                     role="group"
+                     aria-labelledby="exam-question-@i">
+
+                    <label class="exam-option">
+                        <input type="radio"
+                               name="Answers[@i].SelectedAnswer"
+                               value="A"
+                               required />
+
+                        <span class="exam-option-letter">A</span>
+                        <span class="exam-option-text">@question.OptionA</span>
+                        <i class="bi bi-check-circle-fill exam-option-check"
+                           aria-hidden="true"></i>
+                    </label>
+
+                    <label class="exam-option">
+                        <input type="radio"
+                               name="Answers[@i].SelectedAnswer"
+                               value="B"
+                               required />
+
+                        <span class="exam-option-letter">B</span>
+                        <span class="exam-option-text">@question.OptionB</span>
+                        <i class="bi bi-check-circle-fill exam-option-check"
+                           aria-hidden="true"></i>
+                    </label>
+
+                    <label class="exam-option">
+                        <input type="radio"
+                               name="Answers[@i].SelectedAnswer"
+                               value="C"
+                               required />
+
+                        <span class="exam-option-letter">C</span>
+                        <span class="exam-option-text">@question.OptionC</span>
+                        <i class="bi bi-check-circle-fill exam-option-check"
+                           aria-hidden="true"></i>
+                    </label>
+
+                    <label class="exam-option">
+                        <input type="radio"
+                               name="Answers[@i].SelectedAnswer"
+                               value="D"
+                               required />
+
+                        <span class="exam-option-letter">D</span>
+                        <span class="exam-option-text">@question.OptionD</span>
+                        <i class="bi bi-check-circle-fill exam-option-check"
+                           aria-hidden="true"></i>
+                    </label>
+
+                </div>
+
+            </section>
+        }
+
+        <section class="exam-submit-card">
+
+            <div class="exam-submit-icon">
+                <i class="bi bi-shield-check"></i>
+            </div>
+
+            <div class="exam-submit-info">
+                <h3>Готовий завершити тест?</h3>
+                <p>
+                    Перевір обрані відповіді перед надсиланням.
+                    Після завершення побачиш свій результат.
+                </p>
+            </div>
+
+            <button type="submit"
+                    class="exam-submit-button">
+                Завершити тест
+                <i class="bi bi-arrow-right"></i>
+            </button>
+
+        </section>
+
+    </form>
+
+</div>

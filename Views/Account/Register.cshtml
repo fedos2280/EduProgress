@@ -1,0 +1,213 @@
+
+@model EduProgress.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Реєстрація";
+}
+
+<div class="auth-page">
+
+    <div class="auth-layout">
+
+        <section class="auth-showcase">
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="auth-brand">
+                <span class="auth-brand-icon">
+                    <i class="bi bi-mortarboard-fill"></i>
+                </span>
+                EduProgress
+            </a>
+
+            <div class="auth-showcase-content">
+
+                <span class="auth-showcase-eyebrow">
+                    <i class="bi bi-stars"></i>
+                    ТВОЯ НАВЧАЛЬНА ПОДОРОЖ
+                </span>
+
+                <h1>
+                    Почни свій шлях
+                    до <span>нових знань.</span>
+                </h1>
+
+                <p>
+                    Створи безкоштовний обліковий запис
+                    і відкрий для себе навчальні курси,
+                    тести та власний прогрес.
+                </p>
+
+                <div class="auth-benefits">
+
+                    <div class="auth-benefit">
+                        <span>
+                            <i class="bi bi-book-half"></i>
+                        </span>
+
+                        <div>
+                            <strong>Вивчай нове</strong>
+                            <small>Навчальні матеріали та уроки</small>
+                        </div>
+                    </div>
+
+                    <div class="auth-benefit">
+                        <span>
+                            <i class="bi bi-patch-check"></i>
+                        </span>
+
+                        <div>
+                            <strong>Перевіряй знання</strong>
+                            <small>Інтерактивні тестові завдання</small>
+                        </div>
+                    </div>
+
+                    <div class="auth-benefit">
+                        <span>
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </span>
+
+                        <div>
+                            <strong>Відстежуй прогрес</strong>
+                            <small>Спостерігай за своїми досягненнями</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="auth-showcase-footer">
+                <i class="bi bi-lightning-charge-fill"></i>
+                Навчайся. Практикуйся. Прогресуй.
+            </div>
+
+        </section>
+
+        <section class="auth-form-panel">
+
+            <div class="auth-form-heading">
+
+                <div class="auth-form-icon">
+                    <i class="bi bi-person-plus"></i>
+                </div>
+
+                <span class="auth-form-eyebrow">
+                    ПОЧНИ СЬОГОДНІ
+                </span>
+
+                <h2>Створити акаунт</h2>
+
+                <p>
+                    Заповни кілька полів, щоб приєднатися
+                    до EduProgress.
+                </p>
+
+            </div>
+
+            <form asp-controller="Account"
+                  asp-action="Register"
+                  method="post"
+                  class="auth-form">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="auth-validation-summary"></div>
+
+                <div class="auth-field">
+
+                    <label asp-for="FullName"></label>
+
+                    <div class="auth-input-wrap">
+                        <i class="bi bi-person"></i>
+
+                        <input asp-for="FullName"
+                               autocomplete="name"
+                               placeholder="Ім'я та прізвище" />
+                    </div>
+
+                    <span asp-validation-for="FullName"
+                          class="auth-field-error"></span>
+
+                </div>
+
+                <div class="auth-field">
+
+                    <label asp-for="Email"></label>
+
+                    <div class="auth-input-wrap">
+                        <i class="bi bi-envelope"></i>
+
+                        <input asp-for="Email"
+                               autocomplete="email"
+                               placeholder="example@gmail.com" />
+                    </div>
+
+                    <span asp-validation-for="Email"
+                          class="auth-field-error"></span>
+
+                </div>
+
+                <div class="auth-field">
+
+                    <label asp-for="Password"></label>
+
+                    <div class="auth-input-wrap">
+                        <i class="bi bi-lock"></i>
+
+                        <input asp-for="Password"
+                               autocomplete="new-password"
+                               placeholder="Мінімум 8 символів" />
+                    </div>
+
+                    <span asp-validation-for="Password"
+                          class="auth-field-error"></span>
+
+                </div>
+
+                <div class="auth-field">
+
+                    <label asp-for="ConfirmPassword"></label>
+
+                    <div class="auth-input-wrap">
+                        <i class="bi bi-shield-lock"></i>
+
+                        <input asp-for="ConfirmPassword"
+                               autocomplete="new-password"
+                               placeholder="Повтори пароль" />
+                    </div>
+
+                    <span asp-validation-for="ConfirmPassword"
+                          class="auth-field-error"></span>
+
+                </div>
+
+                <button type="submit"
+                        class="auth-submit-button">
+                    Створити акаунт
+                    <i class="bi bi-arrow-right"></i>
+                </button>
+
+            </form>
+
+            <div class="auth-form-footer">
+                <p>
+                    Уже маєш акаунт?
+
+                    <a asp-controller="Account"
+                       asp-action="Login">
+                        Увійти
+                    </a>
+                </p>
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

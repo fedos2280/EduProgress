@@ -1,0 +1,153 @@
+﻿
+@using EduProgress.Models
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ApplicationUser? currentUser = null;
+
+    if (User.Identity?.IsAuthenticated == true)
+    {
+        currentUser = await UserManager.GetUserAsync(User);
+    }
+}
+
+<!DOCTYPE html>
+<html lang="uk" data-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - EduProgress</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+          
+<link rel="stylesheet" href="~/css/courses.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/lessons.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/tests.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/progress.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/teacher.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
+
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+</head>
+
+<body>
+    <main class="app-shell">
+
+        <div class="container pt-3">
+            <div class="d-flex justify-content-end align-items-center gap-2 flex-wrap">
+
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <div class="glass-card px-3 py-2 d-flex align-items-center gap-2">
+                        <i class="bi bi-person-circle"></i>
+
+                        <span>
+                            @(currentUser?.FullName ?? User.Identity.Name)
+                        </span>
+                    </div>
+
+                    <form asp-controller="Account"
+                          asp-action="Logout"
+                          method="post"
+                          class="m-0">
+
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Вийти
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <a asp-controller="Account"
+                       asp-action="Login"
+                       class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        Увійти
+                    </a>
+
+                    <a asp-controller="Account"
+                       asp-action="Register"
+                       class="btn btn-primary btn-sm rounded-pill px-3">
+                        <i class="bi bi-person-plus"></i>
+                        Реєстрація
+                    </a>
+                }
+
+            </div>
+        </div>
+
+        <div class="container py-4">
+            @RenderBody()
+        </div>
+
+    </main>
+
+    <nav class="floating-nav">
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="nav-item"
+           title="Головна">
+            <i class="bi bi-house-door"></i>
+            <span>Головна</span>
+        </a>
+
+        <a asp-controller="Courses"
+           asp-action="Index"
+           class="nav-item"
+           title="Курси">
+            <i class="bi bi-book"></i>
+            <span>Курси</span>
+        </a>
+
+        <a asp-controller="Home"
+           asp-action="Progress"
+           class="nav-item"
+           title="Прогрес">
+            <i class="bi bi-bar-chart"></i>
+            <span>Прогрес</span>
+        </a>
+        
+        
+@if (User.IsInRole("Teacher"))
+{
+    <a asp-controller="Teacher"
+       asp-action="Index"
+       class="nav-item"
+       title="Кабінет викладача">
+        <i class="bi bi-person-workspace"></i>
+        <span>Викладач</span>
+    </a>
+}
+
+
+        <button id="themeToggle"
+                class="theme-toggle"
+                type="button"
+                title="Змінити тему">
+            <i class="bi bi-moon-stars-fill"></i>
+        </button>
+
+    </nav>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

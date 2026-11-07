@@ -1,0 +1,151 @@
+
+@model List<EduProgress.Models.Course>
+
+@{
+    ViewData["Title"] = "Каталог курсів";
+}
+
+<div class="catalog-page">
+
+    <section class="catalog-header">
+        <div class="catalog-header-content">
+
+            <span class="catalog-eyebrow">
+                <i class="bi bi-stars"></i>
+                ТВОЯ НАВЧАЛЬНА ПОДОРОЖ
+            </span>
+
+            <h1>
+                Обирай свій <span>напрямок.</span>
+            </h1>
+
+            <p>
+                Знайди курс, який тебе цікавить.
+                Вивчай нове, проходь уроки та
+                розвивай свої навички.
+            </p>
+
+            <div class="catalog-meta">
+                <span>
+                    <i class="bi bi-collection"></i>
+                    Курсів доступно: @Model.Count
+                </span>
+                <span>
+                    <i class="bi bi-lightning-charge"></i>
+                    Навчайся у власному темпі
+                </span>
+            </div>
+        </div>
+
+        <div class="catalog-header-art" aria-hidden="true">
+            <div class="catalog-art-icon">
+                <i class="bi bi-mortarboard-fill"></i>
+            </div>
+            <div class="catalog-art-orbit orbit-one"></div>
+            <div class="catalog-art-orbit orbit-two"></div>
+        </div>
+    </section>
+
+    <div class="catalog-section-heading">
+        <div>
+            <span class="catalog-kicker">КАТАЛОГ</span>
+            <h2>Доступні курси</h2>
+            <p>Почни з основ або відкрий для себе нову тему.</p>
+        </div>
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="catalog-empty">
+            <i class="bi bi-journal-x"></i>
+            <h3>Поки що курсів немає</h3>
+            <p>Нові навчальні матеріали незабаром з'являться.</p>
+        </div>
+    }
+    else
+    {
+        <div class="catalog-grid">
+
+            @foreach (var course in Model)
+            {
+                var title = course.Title ?? "";
+                var category = course.Category ?? "";
+
+                var technology = (title + " " + category).ToLowerInvariant();
+
+                var icon = "bi-code-slash";
+                var theme = "violet";
+
+                if (technology.Contains("javascript"))
+                {
+                    icon = "bi-filetype-js";
+                    theme = "yellow";
+                }
+                else if (technology.Contains("html"))
+                {
+                    icon = "bi-filetype-html";
+                    theme = "orange";
+                }
+                else if (technology.Contains("css"))
+                {
+                    icon = "bi-filetype-css";
+                    theme = "blue";
+                }
+                else if (technology.Contains("c#") ||
+                         technology.Contains("csharp"))
+                {
+                    icon = "bi-code-square";
+                    theme = "violet";
+                }
+
+                <article class="catalog-card catalog-card-@theme">
+
+                    <div class="catalog-card-top">
+                        <div class="catalog-icon">
+                            <i class="bi @icon"></i>
+                        </div>
+
+                        <span class="catalog-card-type">
+                            <i class="bi bi-book"></i>
+                            Навчальний курс
+                        </span>
+                    </div>
+
+                    <div class="catalog-card-content">
+
+                        <div class="catalog-category">
+                            @course.Category
+                        </div>
+
+                        <h3>@course.Title</h3>
+
+                        <p class="catalog-description">
+                            @course.Description
+                        </p>
+
+                    </div>
+
+                    <div class="catalog-card-bottom">
+
+                        <div class="catalog-level">
+                            <i class="bi bi-bar-chart-steps"></i>
+                            @course.Level
+                        </div>
+
+                        <a asp-controller="Courses"
+                           asp-action="Details"
+                           asp-route-id="@course.Id"
+                           class="catalog-course-btn">
+                            Перейти до курсу
+                            <i class="bi bi-arrow-up-right"></i>
+                        </a>
+
+                    </div>
+
+                </article>
+            }
+
+        </div>
+    }
+
+</div>

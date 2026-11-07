@@ -1,0 +1,74 @@
+
+@model List<EduProgress.Models.TestAttempt>
+
+@{
+    ViewData["Title"] = "Результати студентів";
+}
+
+<div class="container py-5">
+
+    <a asp-controller="Teacher"
+       asp-action="Index"
+       class="btn btn-outline-secondary mb-4">
+        ← Назад до кабінету
+    </a>
+
+    <div class="glass-card p-4 mb-4">
+        <h1 class="fw-bold">
+            <i class="bi bi-clipboard-data"></i>
+            Результати студентів
+        </h1>
+
+        <p class="mb-0">
+            Усього завершених спроб: @Model.Count
+        </p>
+    </div>
+
+    <div class="glass-card p-4">
+
+        @if (Model.Count == 0)
+        {
+            <p class="mb-0">
+                Студенти ще не проходили тестування.
+            </p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Студент</th>
+                            <th>Курс</th>
+                            <th>Правильно</th>
+                            <th>Оцінка</th>
+                            <th>Дата (UTC)</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var attempt in Model)
+                        {
+                            <tr>
+                                <td>@attempt.Student.FullName</td>
+                                <td>@attempt.Course.Title</td>
+                                <td>
+                                    @attempt.CorrectAnswers /
+                                    @attempt.TotalQuestions
+                                </td>
+                                <td>
+                                    <strong>@attempt.ScorePercent%</strong>
+                                </td>
+                                <td>
+                                    @attempt.CompletedAt?.ToString(
+                                        "dd.MM.yyyy HH:mm")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+    </div>
+</div>

@@ -1,0 +1,216 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+:root {
+  --bg-main: linear-gradient(135deg, #e8eefc, #dbe7ff);
+  --text-main: #111827;
+  --glass-bg: rgba(255, 255, 255, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.35);
+  --glass-shadow: 0 10px 35px rgba(31, 41, 55, 0.18);
+  --nav-bg: rgba(255, 255, 255, 0.55);
+  --nav-text: #1f2937;
+  --nav-active: #ff2d75;
+  --card-bg: rgba(255, 255, 255, 0.35);
+}
+
+html[data-theme="dark"] {
+  --bg-main: linear-gradient(135deg, #0b1020, #111827);
+  --text-main: #f3f4f6;
+  --glass-bg: rgba(22, 28, 45, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  --nav-bg: rgba(17, 24, 39, 0.55);
+  --nav-text: #f3f4f6;
+  --nav-active: #ff3b82;
+  --card-bg: rgba(255, 255, 255, 0.05);
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg-main);
+  color: var(--text-main);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+  padding-bottom: 110px;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.page-section {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 40px;
+}
+
+.glass-card {
+  width: 100%;
+  max-width: 900px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: var(--glass-shadow);
+  border-radius: 28px;
+  padding: 32px;
+}
+
+.glass-card h1,
+.glass-card h2,
+.glass-card h3,
+.glass-card h4,
+.glass-card h5,
+.glass-card p,
+.glass-card li {
+  color: var(--text-main);
+}
+
+.floating-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--nav-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: var(--glass-shadow);
+  z-index: 1000;
+}
+
+.nav-item,
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--nav-text);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 16px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.nav-item i,
+.theme-toggle i {
+  font-size: 1.1rem;
+}
+
+.nav-item:hover,
+.theme-toggle:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--nav-active);
+}
+
+.nav-item.active {
+  background: rgba(255, 45, 117, 0.14);
+  color: var(--nav-active);
+  box-shadow: 0 0 18px rgba(255, 45, 117, 0.35);
+}
+
+.hero-box {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.hero-box h1 {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.hero-box p {
+  font-size: 1.2rem;
+  margin-top: 16px;
+}
+
+.hero-button {
+  margin-top: 20px;
+  border-radius: 999px;
+  padding: 12px 24px;
+}
+
+.course-grid .card {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--glass-shadow);
+  color: var(--text-main);
+}
+
+.course-grid .card-title,
+.course-grid .card-text {
+  color: var(--text-main);
+}
+
+.btn-primary {
+  border-radius: 999px;
+  padding: 10px 18px;
+}
+
+.btn-outline-secondary {
+  border-radius: 999px;
+}
+
+.list-group-item {
+  background: var(--card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--glass-border);
+  margin-bottom: 10px;
+  border-radius: 16px !important;
+}
+
+.alert-info {
+  border-radius: 18px;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .floating-nav {
+    width: calc(100% - 24px);
+    justify-content: space-between;
+    gap: 6px;
+    padding: 10px 12px;
+  }
+
+  .nav-item span {
+    display: none;
+  }
+
+  .theme-toggle {
+    padding: 10px 12px;
+  }
+
+  .glass-card {
+    padding: 22px;
+  }
+
+  .hero-box h1 {
+    font-size: 2.2rem;
+  }
+}
+

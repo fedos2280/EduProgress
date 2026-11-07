@@ -1,0 +1,215 @@
+
+@model List<EduProgress.Models.Course>
+
+@{
+    ViewData["Title"] = "Кабінет викладача";
+}
+
+<div class="teacher-page">
+
+    <section class="teacher-hero">
+        <div class="teacher-hero-content">
+            <span class="teacher-eyebrow">
+                <i class="bi bi-stars"></i>
+                ПАНЕЛЬ КЕРУВАННЯ
+            </span>
+
+            <h1>Створюй. Навчай. <span>Надихай.</span></h1>
+
+            <p>
+                Керуй навчальними курсами, оновлюй матеріали,
+                створюй тести та переглядай результати студентів.
+            </p>
+
+            <div class="teacher-hero-actions">
+                <a asp-controller="Teacher"
+                   asp-action="CreateCourse"
+                   class="teacher-primary-button">
+                    <i class="bi bi-plus-circle"></i>
+                    Створити курс
+                </a>
+
+                <a asp-controller="Teacher"
+                   asp-action="Results"
+                   class="teacher-secondary-button">
+                    <i class="bi bi-clipboard-data"></i>
+                    Результати студентів
+                </a>
+            </div>
+        </div>
+
+        <div class="teacher-hero-art" aria-hidden="true">
+            <div class="teacher-hero-ring"></div>
+            <div class="teacher-hero-icon">
+                <i class="bi bi-person-workspace"></i>
+            </div>
+        </div>
+    </section>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="teacher-notice" role="status">
+            <i class="bi bi-check-circle-fill"></i>
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <section class="teacher-summary" aria-label="Огляд курсів">
+        <div class="teacher-summary-card">
+            <div class="teacher-summary-icon">
+                <i class="bi bi-journals"></i>
+            </div>
+
+            <strong>@Model.Count</strong>
+            <span>Курсів на платформі</span>
+        </div>
+
+        <a asp-controller="Teacher"
+           asp-action="Questions"
+           class="teacher-quick-card">
+            <div class="teacher-quick-icon">
+                <i class="bi bi-ui-checks"></i>
+            </div>
+
+            <h2>Керування тестами</h2>
+            <p>Переглядай та редагуй запитання.</p>
+
+            <span>
+                Відкрити запитання
+                <i class="bi bi-arrow-up-right"></i>
+            </span>
+        </a>
+
+        <a asp-controller="Teacher"
+           asp-action="CreateLesson"
+           class="teacher-quick-card">
+            <div class="teacher-quick-icon blue">
+                <i class="bi bi-journal-plus"></i>
+            </div>
+
+            <h2>Новий урок</h2>
+            <p>Додавай навчальні матеріали до курсів.</p>
+
+            <span>
+                Створити урок
+                <i class="bi bi-arrow-up-right"></i>
+            </span>
+        </a>
+    </section>
+
+    <section class="teacher-courses">
+        <div class="teacher-section-heading">
+            <div>
+                <span>НАВЧАЛЬНІ МАТЕРІАЛИ</span>
+                <h2>Керування курсами</h2>
+                <p>
+                    Обирай курс, переглядай його уроки
+                    та змінюй навчальні матеріали.
+                </p>
+            </div>
+
+            <a asp-controller="Teacher"
+               asp-action="CreateCourse"
+               class="teacher-add-button">
+                <i class="bi bi-plus-lg"></i>
+                Новий курс
+            </a>
+        </div>
+
+        @if (Model.Count == 0)
+        {
+            <div class="teacher-empty">
+                <i class="bi bi-journal-x"></i>
+                <h3>Курсів поки немає</h3>
+                <p>Створи перший курс, щоб почати роботу.</p>
+            </div>
+        }
+        else
+        {
+            <div class="teacher-course-grid">
+                @foreach (var course in Model)
+                {
+                    var technology = (
+                        (course.Title ?? "") + " " +
+                        (course.Category ?? "")
+                    ).ToLowerInvariant();
+
+                    var icon = "bi-code-slash";
+                    var theme = "violet";
+
+                    if (technology.Contains("javascript"))
+                    {
+                        icon = "bi-filetype-js";
+                        theme = "yellow";
+                    }
+                    else if (technology.Contains("html"))
+                    {
+                        icon = "bi-filetype-html";
+                        theme = "orange";
+                    }
+                    else if (technology.Contains("css"))
+                    {
+                        icon = "bi-filetype-css";
+                        theme = "blue";
+                    }
+
+                    <article class="teacher-course-card teacher-course-@theme">
+                        <div class="teacher-course-top">
+                            <div class="teacher-course-icon">
+                                <i class="bi @icon"></i>
+                            </div>
+                            <span class="teacher-course-category">
+                                @course.Category
+                            </span>
+                        </div>
+
+                        <h3>@course.Title</h3>
+                        <p class="teacher-course-description">
+                            @course.Description
+                        </p>
+
+                        <div class="teacher-course-level">
+                            <i class="bi bi-bar-chart-steps"></i>
+                            @course.Level
+                        </div>
+
+                        <div class="teacher-course-actions">
+                            <a asp-controller="Courses"
+                               asp-action="Details"
+                               asp-route-id="@course.Id"
+                               class="teacher-course-view">
+                                <i class="bi bi-eye"></i>
+                                Переглянути
+                            </a>
+
+                            <a asp-controller="Teacher"
+                               asp-action="EditCourse"
+                               asp-route-id="@course.Id"
+                               class="teacher-course-edit">
+                                <i class="bi bi-pencil-square"></i>
+                                Редагувати
+                            </a>
+
+                            <a asp-controller="Teacher"
+                               asp-action="CreateLesson"
+                               asp-route-courseId="@course.Id"
+                               class="teacher-course-subaction">
+                                <i class="bi bi-plus-circle"></i>
+                                Додати урок
+                            </a>
+
+                            <a asp-controller="Teacher"
+                               asp-action="CreateQuestion"
+                               asp-route-courseId="@course.Id"
+                               class="teacher-course-subaction">
+                                <i class="bi bi-ui-checks"></i>
+                                Додати запитання
+                            </a>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+    </section>
+
+</div>

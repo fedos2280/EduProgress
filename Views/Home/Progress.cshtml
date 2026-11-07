@@ -1,0 +1,243 @@
+
+@model List<EduProgress.ViewModels.CourseProgressViewModel>
+
+@{
+    ViewData["Title"] = "Мій прогрес";
+
+    int totalLessons = Model.Sum(c => c.TotalLessons);
+    int completedLessons = Model.Sum(c => c.CompletedLessons);
+
+    int overallProgress = totalLessons == 0
+        ? 0
+        : (int)Math.Round(completedLessons * 100.0 / totalLessons);
+
+    int finishedCourses = Model.Count(c =>
+        c.TotalLessons > 0 &&
+        c.CompletedLessons >= c.TotalLessons);
+}
+
+<div class="student-progress-page">
+
+    <section class="student-progress-hero">
+        <div class="student-progress-hero-content">
+            <span class="student-progress-eyebrow">
+                <i class="bi bi-stars"></i>
+                ТВОЇ НАВЧАЛЬНІ ДОСЯГНЕННЯ
+            </span>
+
+            <h1>Кожен крок — <span>це прогрес.</span></h1>
+
+            <p>
+                Стеж за своїми результатами, повертайся
+                до незавершених курсів і продовжуй
+                розвивати свої навички.
+            </p>
+        </div>
+
+        <div class="student-progress-hero-art" aria-hidden="true">
+            <div class="student-progress-hero-ring"></div>
+            <div class="student-progress-hero-icon">
+                <i class="bi bi-graph-up-arrow"></i>
+            </div>
+        </div>
+    </section>
+
+    <section class="student-progress-stats"
+             aria-label="Статистика навчання">
+
+        <div class="student-progress-stat">
+            <div class="student-progress-stat-icon purple">
+                <i class="bi bi-journals"></i>
+            </div>
+            <strong>@Model.Count</strong>
+            <span>Доступних курсів</span>
+        </div>
+
+        <div class="student-progress-stat">
+            <div class="student-progress-stat-icon blue">
+                <i class="bi bi-check2-circle"></i>
+            </div>
+            <strong>@completedLessons</strong>
+            <span>Завершених уроків</span>
+        </div>
+
+        <div class="student-progress-stat">
+            <div class="student-progress-stat-icon pink">
+                <i class="bi bi-trophy"></i>
+            </div>
+            <strong>@finishedCourses</strong>
+            <span>Завершених курсів</span>
+        </div>
+    </section>
+
+    <section class="student-overall-card">
+
+        <div class="student-overall-info">
+            <span class="student-progress-section-kicker">
+                ЗАГАЛЬНИЙ РЕЗУЛЬТАТ
+            </span>
+
+            <h2>Твій навчальний прогрес</h2>
+
+            <p>
+                Ти завершив <strong>@completedLessons</strong>
+                із <strong>@totalLessons</strong> уроків,
+                доступних на платформі.
+            </p>
+
+            <div class="student-overall-track"
+                 role="progressbar"
+                 aria-label="Загальний прогрес навчання"
+                 aria-valuenow="@overallProgress"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+                <div class="student-overall-fill"
+                     style="width: @(overallProgress)%;">
+                </div>
+            </div>
+
+            <div class="student-overall-caption">
+                <span>Виконано</span>
+                <strong>@overallProgress%</strong>
+            </div>
+        </div>
+
+        <div class="student-overall-circle"
+             role="img"
+             aria-label="Загальний прогрес: @overallProgress відсотків"
+             style="--progress-value: @overallProgress;">
+            <div class="student-overall-circle-inner">
+                <strong>@overallProgress%</strong>
+                <span>пройдено</span>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="student-course-section">
+
+        <div class="student-course-heading">
+            <div>
+                <span class="student-progress-section-kicker">
+                    НАВЧАЛЬНИЙ ШЛЯХ
+                </span>
+
+                <h2>Прогрес за курсами</h2>
+
+                <p>
+                    Обирай курс і продовжуй з того місця,
+                    на якому зупинився.
+                </p>
+            </div>
+
+            <span class="student-course-counter">
+                <i class="bi bi-collection"></i>
+                @Model.Count курсів
+            </span>
+        </div>
+
+        @if (Model.Count == 0)
+        {
+            <div class="student-progress-empty">
+                <i class="bi bi-journal-x"></i>
+                <h3>Курсів поки немає</h3>
+                <p>Нові навчальні матеріали з'являться згодом.</p>
+            </div>
+        }
+        else
+        {
+            <div class="student-course-grid">
+
+                @foreach (var course in Model)
+                {
+                    int percent = Math.Clamp(
+                        course.ProgressPercent, 0, 100);
+
+                    bool completed = course.TotalLessons > 0 &&
+                                     course.CompletedLessons >=
+                                     course.TotalLessons;
+
+                    var technology =
+                        (course.CourseTitle ?? "").ToLowerInvariant();
+
+                    var icon = "bi-code-slash";
+                    var theme = "violet";
+
+                    if (technology.Contains("javascript"))
+                    {
+                        icon = "bi-filetype-js";
+                        theme = "yellow";
+                    }
+                    else if (technology.Contains("html"))
+                    {
+                        icon = "bi-filetype-html";
+                        theme = "orange";
+                    }
+                    else if (technology.Contains("css"))
+                    {
+                        icon = "bi-filetype-css";
+                        theme = "blue";
+                    }
+
+                    <article class="student-course-card student-course-@theme">
+
+                        <div class="student-course-top">
+                            <div class="student-course-icon">
+                                <i class="bi @icon"></i>
+                            </div>
+
+                            @if (completed)
+                            {
+                                <span class="student-course-done">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    Завершено
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="student-course-active">
+                                    У процесі
+                                </span>
+                            }
+                        </div>
+
+                        <h3>@course.CourseTitle</h3>
+
+                        <div class="student-course-progress-label">
+                            <span>Прогрес курсу</span>
+                            <strong>@percent%</strong>
+                        </div>
+
+                        <div class="student-course-track"
+                             role="progressbar"
+                             aria-label="Прогрес курсу @course.CourseTitle"
+                             aria-valuenow="@percent"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
+                            <div class="student-course-fill"
+                                 style="width: @(percent)%;">
+                            </div>
+                        </div>
+
+                        <p>
+                            Завершено @course.CompletedLessons
+                            із @course.TotalLessons уроків
+                        </p>
+
+                        <a asp-controller="Courses"
+                           asp-action="Details"
+                           asp-route-id="@course.CourseId"
+                           class="student-course-button">
+                            @(completed ? "Переглянути курс" : "Продовжити навчання")
+                            <i class="bi bi-arrow-up-right"></i>
+                        </a>
+
+                    </article>
+                }
+
+            </div>
+        }
+
+    </section>
+
+</div>
